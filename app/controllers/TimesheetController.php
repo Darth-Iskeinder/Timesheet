@@ -45,7 +45,13 @@ class TimesheetController extends ControllerBase
 
         //Generate days for table
         $holidays = Holidays::find();
-        $this->view->holidays = $holidays;
+        $holidaysArray = $holidays->toArray();
+        $holidaysDate = [];
+        foreach ($holidaysArray as $holiday){
+            $holidaysDate[] = $holiday['date'];
+        }
+
+        $this->view->holidaysDate = $holidaysDate;
         $this->view->days = $this->getAmountOfDays($getMonthUsers, $getYearUsers);
     }
 
@@ -114,7 +120,7 @@ class TimesheetController extends ControllerBase
         for ($day=1;$day<=$last;$day++) {
             $date->setDate($year, $month, $day);
 
-            $monthDay[$day]=$date->format("l");
+            $monthDay[$day]=$date->format("Y-m-d");
         }
         return $monthDay;
     }

@@ -2,10 +2,8 @@
 
 use Phalcon\Forms\Element\AbstractElement;
 use Phalcon\Forms\Form;
-use Phalcon\Validation\Validator\Email;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Forms\Element\Text;
-use Phalcon\Forms\Element\Password;
 use Phalcon\Forms\Element\Hidden;
 use Phalcon\Forms\Element\Select;
 

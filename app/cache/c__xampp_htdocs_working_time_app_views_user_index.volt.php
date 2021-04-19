@@ -8,6 +8,7 @@
 <?= $this->tag->linkTo(['time/create', 'Create time for user']) ?>
 <br>
 <br>
+<?= $this->tag->linkTo(['holiday/create/', 'Create new holiday']) ?>
 <?php foreach ($users as $user) { ?>
 
 <table>

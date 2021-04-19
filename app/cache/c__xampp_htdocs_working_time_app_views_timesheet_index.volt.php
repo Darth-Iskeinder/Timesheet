@@ -53,42 +53,46 @@
     </thead>
     <tbody>
 
-            <?php foreach ($days as $day => $weekDay) { ?>
-                 <tr>
-                 <?php if ($weekDay == 'Saturday' || $weekDay == 'Sunday') { ?>
-                    <td style="background-color:#FF0000">
-                    <?= $day ?>
-                    <br>
-                    <?= $weekDay ?>
-                    </td>
-                 <?php } else { ?>
-                    <td style="background-color:#00FF00">
+            <?php foreach ($days as $day => $date) { ?>
+
+                     <tr>
+
+                     <?php if ($this->isIncluded($date, $holidaysDate)) { ?>
+                        <td style="background-color:#FF0000">
                         <?= $day ?>
                         <br>
-                        <?= $weekDay ?>
-                    </td>
-                 <?php } ?>
 
-                    <td>
-                    <?php foreach ($users as $user) { ?>
+                        </td>
+                     <?php } else { ?>
+                        <td style="background-color:#00FF00">
+                            <?= $day ?>
+                            <br>
+
+                        </td>
+                     <?php } ?>
+
                         <td>
-                        <?php foreach ($workTime as $userTime) { ?>
+                        <?php foreach ($users as $user) { ?>
+                            <td>
+                            <?php foreach ($workTime as $userTime) { ?>
 
-                            <?php if ($day == $userTime->day && $userTime->userId == $user->id) { ?>
+                                <?php if ($day == $userTime->day && $userTime->userId == $user->id) { ?>
 
-                                    <div>
-                                    <?= $userTime->startTime ?>-<?= $userTime->endTime ?>
+                                        <div>
+                                        <?= $userTime->startTime ?>-<?= $userTime->endTime ?>
 
-                                    </div>
+                                        </div>
+
+                                <?php } ?>
 
                             <?php } ?>
+                            </td>
 
                         <?php } ?>
                         </td>
 
-                    <?php } ?>
-                    </td>
-                </tr>
+                    </tr>
+
             <?php } ?>
     </tbody>
 </table>

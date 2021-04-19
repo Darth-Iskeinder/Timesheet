@@ -15,6 +15,7 @@
 {{ link_to("time/create", "Create time for user") }}
 <br>
 <br>
+{{ link_to("holiday/create/", "Create new holiday") }}
 {% for user in users %}
 
 <table>

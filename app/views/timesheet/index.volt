@@ -65,42 +65,46 @@
     </thead>
     <tbody>
 
-            {% for day, weekDay in days %}
-                 <tr>
-                 {% if weekDay == 'Saturday' or weekDay == 'Sunday' %}
-                    <td style="background-color:#FF0000">
-                    {{ day }}
-                    <br>
-                    {{weekDay}}
-                    </td>
-                 {% else %}
-                    <td style="background-color:#00FF00">
+            {% for day, date in days %}
+
+                     <tr>
+
+                     {% if date in holidaysDate %}
+                        <td style="background-color:#FF0000">
                         {{ day }}
                         <br>
-                        {{weekDay}}
-                    </td>
-                 {% endif %}
 
-                    <td>
-                    {% for user in users %}
+                        </td>
+                     {% else %}
+                        <td style="background-color:#00FF00">
+                            {{ day }}
+                            <br>
+
+                        </td>
+                     {% endif %}
+
                         <td>
-                        {% for userTime in workTime %}
+                        {% for user in users %}
+                            <td>
+                            {% for userTime in workTime %}
 
-                            {% if day == userTime.day and userTime.userId == user.id %}
+                                {% if day == userTime.day and userTime.userId == user.id %}
 
-                                    <div>
-                                    {{ userTime.startTime }}-{{ userTime.endTime }}
+                                        <div>
+                                        {{ userTime.startTime }}-{{ userTime.endTime }}
 
-                                    </div>
+                                        </div>
 
-                            {% endif %}
+                                {% endif %}
+
+                            {% endfor %}
+                            </td>
 
                         {% endfor %}
                         </td>
 
-                    {% endfor %}
-                    </td>
-                </tr>
+                    </tr>
+
             {% endfor %}
     </tbody>
 </table>
