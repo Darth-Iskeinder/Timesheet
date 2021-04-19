@@ -34,13 +34,14 @@
         <td width="7%">
              {% for time in userTime %}
                 {% if user.id == time.userId %}
-                    {% if time.year == year %}
-                        {% if time.month == month %}
-                            {% if time.day == day %}
-                                {{ time.startTime }}
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
+                    {{ time.startTime }}
+<!--                     {% if time.year == year %} -->
+<!--                         {% if time.month == month %} -->
+<!--                             {% if time.day == day %} -->
+<!--                                 {{ time.startTime }} -->
+<!--                             {% endif %} -->
+<!--                         {% endif %} -->
+<!--                     {% endif %} -->
                 {% endif %}
              {% endfor %}
         </td>

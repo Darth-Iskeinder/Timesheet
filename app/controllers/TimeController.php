@@ -5,13 +5,25 @@ class TimeController extends ControllerBase
 {
     public function indexAction($id)
     {
+        $getMonth = $this->request->get('month');
+        $getYear = $this->request->get('year');
+        $months = [1=>'January', 2=>'February', 3=>'March', 4=>'April', 5=>'May', 6=>'June', 7=>'July ', 8=>'August',
+            9=>'September', 10=>'October', 11=>'November', 12=>'December',];
+        $years = [2015=>'2015', 2016=>'2016', 2017=>'2017', 2018=>'2018', 2019=>'2019', 2020=>'2020', 2021=>'2021'];
+
         $userTimes = WorkTime::find([
-            "conditions" => "user_id = ?0",
+            "conditions" => "user_id = ?0 AND month = ?1 AND year = ?2",
             "bind" => [
-                0 => $id
+                $id,
+                $getMonth,
+                $getYear
             ]
         ]);
-
+        $this->view->getMonth = $getMonth;
+        $this->view->getYear = $getYear;
+        $this->view->years = $years;
+        $this->view->months = $months;
+        $this->view->userId = $id;
         $this->view->userTimes = $userTimes;
     }
 

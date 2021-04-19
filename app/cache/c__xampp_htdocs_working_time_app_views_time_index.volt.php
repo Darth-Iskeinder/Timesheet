@@ -5,22 +5,17 @@
             <?= $this->tag->linkTo(['user/index', 'Go Back']) ?>
         </li>
     </ul>
-<select id="selectvalue">
-
-<option value="all">All</option>
-<option value="1">January</option>
-<option value="2">February</option>
-<option value="3">March</option>
-<option value="4">April</option>
-<option value="5">May</option>
-<option value="6">June</option>
-<option value="7">July</option>
-<option value="8">August</option>
-<option value="9">September</option>
-<option value="10">October</option>
-<option value="11">November</option>
-<option value="12">December</option>
+<select id="select-month" selected="selected">
+        <?php foreach ($months as $key => $month) { ?>
+            <option value="<?= $key ?>"><?= $month ?></option>
+        <?php } ?>
 </select>
+<select id="select-year">
+        <?php foreach ($years as $key => $year) { ?>
+            <option value="<?= $key ?>"><?= $year ?></option>
+        <?php } ?>
+</select>
+
 <h1>List of times by user</h2>
 
 <th id="test"></th>
@@ -48,17 +43,19 @@
 </div>
 
 <script>
-    $('#selectvalue').change(function(){
-        var month = $(this).children("option:selected").val();
-            $.ajax({
-                 type: 'POST',
-                 url: '/working_time/time/sortUserData',
-                 datatype: 'json',
-                 data: {'month' : month},
-                 success: function(data){
-                    console.log(month);
-                    $('#test').html(data);
-                 }
-            })
+$( document ).ready(function() {
+    $('#select-month').val('<?= $getMonth ?>').attr('selected','selected');
+    $('#select-year').val('<?= $getYear ?>').attr('selected','selected');
+});
+    $('#select-month').change(function(){
+        var month = $(this).val();
+        console.log(month);
+        var year = $('#select-year').val();
+          location.assign('/working_time/time/index/<?= $userId ?>?month='+month+ '&year='+year);
     });
+    $('#select-year').change(function(){
+            var month = $('#select-month').val();
+            var year = $(this).val();
+              location.assign('/working_time/time/index/<?= $userId ?>?month='+month + '&year='+year);
+        });
 </script>

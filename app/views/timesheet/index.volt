@@ -15,20 +15,15 @@
                          'class': 'btn btn-primary btn-lg'
                         )
                     }}
-<select id="selectvalue">
-<option value="all">All</option>
-<option value="1">January</option>
-<option value="2">February</option>
-<option value="3">March</option>
-<option value="4">April</option>
-<option value="5">May</option>
-<option value="6">June</option>
-<option value="7">July</option>
-<option value="8">August</option>
-<option value="9">September</option>
-<option value="10">October</option>
-<option value="11">November</option>
-<option value="12">December</option>
+<select id="select-month-users" selected="selected">
+        {% for key, month in months %}
+            <option value="{{ key }}">{{month}}</option>
+        {% endfor %}
+</select>
+<select id="select-year-users">
+        {% for key, year in years %}
+            <option value="{{ key }}">{{year}}</option>
+        {% endfor %}
 </select>
 
 <h2>My working Hours</h2>
@@ -52,7 +47,6 @@
       <th>Country</th>
     </tr>
  </table>
-
  <input type="button" data-id="" class="btn btn-primary" value="Start time" id="StartTime">
  <input type="button" class="btn btn-primary" value="End time" id="EndTime">
 <table class="table table-bordered">
@@ -60,6 +54,9 @@
     <tr>
     <td>
       Date
+    </td>
+    <td>
+
     </td>
         {% for user in users %}
             <th scope="row">{{ user.name }}</th>
@@ -70,23 +67,39 @@
 
             {% for day, weekDay in days %}
                  <tr>
-                    <td>
+                 {% if weekDay == 'Saturday' or weekDay == 'Sunday' %}
+                    <td style="background-color:#FF0000">
                     {{ day }}
+                    <br>
+                    {{weekDay}}
                     </td>
-<!--                     <td> -->
-                    {% for user in users %}
-                        {% for userTime in user.workTime %}
+                 {% else %}
+                    <td style="background-color:#00FF00">
+                        {{ day }}
+                        <br>
+                        {{weekDay}}
+                    </td>
+                 {% endif %}
 
-                            {% if day == userTime.day %}
-                                <td>
+                    <td>
+                    {% for user in users %}
+                        <td>
+                        {% for userTime in workTime %}
+
+                            {% if day == userTime.day and userTime.userId == user.id %}
+
                                     <div>
-                                    {{ userTime.startTime }}
+                                    {{ userTime.startTime }}-{{ userTime.endTime }}
+
                                     </div>
-                                </td>
+
                             {% endif %}
+
                         {% endfor %}
+                        </td>
+
                     {% endfor %}
-<!--                     </td> -->
+                    </td>
                 </tr>
             {% endfor %}
     </tbody>
@@ -98,6 +111,22 @@
 <script>
 $( document ).ready(function() {
     $("#EndTime").css("display", "none");
+    $('#select-month-users').val('{{getMonthUsers}}').attr('selected', 'selected');
+    $('#select-year-users').val('{{getYearUsers}}').attr('selected', 'selected');
+});
+
+$('#select-month-users').change(function(){
+    var monthUsers = $(this).val();
+    console.log(monthUsers);
+    var yearUsers = $('#select-year-users').val();
+    location.assign('/working_time/timesheet/index?monthUsers='+monthUsers+ '&yearUsers='+yearUsers);
+});
+
+$('#select-year-users').change(function(){
+    var yearUsers = $(this).val();
+    console.log(yearUsers);
+    var monthUsers = $('#select-month-users').val();
+    location.assign('/working_time/timesheet/index?monthUsers='+monthUsers+ '&yearUsers='+yearUsers);
 });
 
     $('#StartTime').on('click', function(){
