@@ -9,6 +9,12 @@
 <br>
 <br>
 <?= $this->tag->linkTo(['holiday/create/', 'Create new holiday']) ?>
+<br>
+<br>
+<?= $this->tag->linkTo(['lateness/createStartDayTime/', 'Create start time for day']) ?>
+<br>
+<br>
+<?= $this->tag->linkTo(['lateness/index/', 'List of lateness']) ?>
 <?php foreach ($users as $user) { ?>
 
 <table>
@@ -28,14 +34,17 @@
         <td width="7%">
              <?php foreach ($userTime as $time) { ?>
                 <?php if ($user->id == $time->userId) { ?>
-                    <?= $time->startTime ?>
-<!--                     <?php if ($time->year == $year) { ?> -->
-<!--                         <?php if ($time->month == $month) { ?> -->
-<!--                             <?php if ($time->day == $day) { ?> -->
-<!--                                 <?= $time->startTime ?> -->
-<!--                             <?php } ?> -->
-<!--                         <?php } ?> -->
-<!--                     <?php } ?> -->
+<!--                     <?= $time->startTime ?> -->
+                    <?php if ($time->year == $year) { ?>
+
+                        <?php if ($time->month == $month) { ?>
+
+                            <?php if ($time->day == $day) { ?>
+
+                                <?= $time->startTime ?>
+                            <?php } ?>
+                        <?php } ?>
+                    <?php } ?>
                 <?php } ?>
              <?php } ?>
         </td>

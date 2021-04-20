@@ -5,8 +5,15 @@ class TimeController extends ControllerBase
 {
     public function indexAction($id)
     {
-        $getMonth = $this->request->get('month');
-        $getYear = $this->request->get('year');
+        $currentDate = new DateTime();
+        if($this->request->get('month') && $this->request->get('year')){
+            $getMonth = $this->request->get('month');
+            $getYear = $this->request->get('year');
+        } else{
+            $getMonth = $currentDate->format('m');
+            $getYear = $currentDate->format('Y');
+        }
+
         $months = [1=>'January', 2=>'February', 3=>'March', 4=>'April', 5=>'May', 6=>'June', 7=>'July ', 8=>'August',
             9=>'September', 10=>'October', 11=>'November', 12=>'December',];
         $years = [2015=>'2015', 2016=>'2016', 2017=>'2017', 2018=>'2018', 2019=>'2019', 2020=>'2020', 2021=>'2021'];
@@ -25,17 +32,6 @@ class TimeController extends ControllerBase
         $this->view->months = $months;
         $this->view->userId = $id;
         $this->view->userTimes = $userTimes;
-    }
-
-    public function sortUserDataAction()
-    {
-        $test = 'Hello, i am sorter';
-        try {
-            var_dump($this->request->getPost('month'));
-        } catch(Exception $e){
-            echo 'Выброшено исключение: ',  $e->getMessage(), "\n";
-        }
-        return json_encode($test);
     }
 
     public function createAction()

@@ -16,6 +16,12 @@
 <br>
 <br>
 {{ link_to("holiday/create/", "Create new holiday") }}
+<br>
+<br>
+{{ link_to("lateness/createStartDayTime/", "Create start time for day") }}
+<br>
+<br>
+{{ link_to("lateness/index/", "List of lateness") }}
 {% for user in users %}
 
 <table>
@@ -35,14 +41,17 @@
         <td width="7%">
              {% for time in userTime %}
                 {% if user.id == time.userId %}
-                    {{ time.startTime }}
-<!--                     {% if time.year == year %} -->
-<!--                         {% if time.month == month %} -->
-<!--                             {% if time.day == day %} -->
-<!--                                 {{ time.startTime }} -->
-<!--                             {% endif %} -->
-<!--                         {% endif %} -->
-<!--                     {% endif %} -->
+<!--                     {{ time.startTime }} -->
+                    {% if time.year == year %}
+
+                        {% if time.month == month %}
+
+                            {% if time.day == day %}
+
+                                {{ time.startTime }}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
                 {% endif %}
              {% endfor %}
         </td>

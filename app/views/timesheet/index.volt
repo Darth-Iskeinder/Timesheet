@@ -31,7 +31,7 @@
     You have: <p>76</p>
     You have/Assigned: <p>43.6%</p>
     Assigned: <p>176</p>
-    <strong>На работе необходимо быть до 9:00</strong>
+    <strong>На работе необходимо быть до {{startDay}}</strong>
 </div>
 <table>
   <tr>
@@ -141,6 +141,7 @@ $('#select-year-users').change(function(){
             url: 'createStart',
             datatype: 'json',
             success: function(data){
+                console.log(data);
                 var obj = JSON.parse(data);
                 console.log(obj);
                 $('#start').html(obj.time);

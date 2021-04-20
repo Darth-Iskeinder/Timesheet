@@ -18,7 +18,7 @@ class SessionController extends ControllerBase
     {
         $this->session->set('auth', array(
             'id'    => $user->getId(),
-            'email'  => $user->getEmail()
+            'role'  => $user->getRole()
         ));
     }
 
@@ -39,6 +39,7 @@ class SessionController extends ControllerBase
 
 
             if($user !== false){
+
                 if($user->getActive() == 'N'){
 
                     $this->flash->error("User Deactivate");
@@ -49,6 +50,7 @@ class SessionController extends ControllerBase
                 if($user->getRole() === 'admin'){
                     return $this->response->redirect('user/index');
                 }
+
                 return $this->response->redirect('timesheet/index');
             }
 

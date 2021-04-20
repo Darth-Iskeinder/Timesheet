@@ -50,6 +50,9 @@ class TimesheetController extends ControllerBase
         foreach ($holidaysArray as $holiday){
             $holidaysDate[] = $holiday['date'];
         }
+        $startDayTime = StartDayTime::findFirst();
+        $startDay = $startDayTime->getTime();
+        $this->view->startDay = $startDay;
 
         $this->view->holidaysDate = $holidaysDate;
         $this->view->days = $this->getAmountOfDays($getMonthUsers, $getYearUsers);
@@ -59,11 +62,18 @@ class TimesheetController extends ControllerBase
     {
         $dateTime = new DateTime();
         $startTime = new WorkTime();
+        $startDayTime = StartDayTime::findFirst();
 
         $startTime->setUserId($this->session->auth["id"]);
         $startTime->setStartTime($dateTime->format('H:i'));
         $startTime->setYear($dateTime->format('Y'));
         $startTime->setMonth($dateTime->format('m'));
+        if($dateTime->format('H:i') > $startDayTime->getTime()){
+            $startTime->setLateness(true);
+        } else{
+            $startTime->setLateness(false);
+        }
+
         $startTime->setDay($dateTime->format('d'));
 
         if ($startTime->save() === false) {
@@ -98,10 +108,7 @@ class TimesheetController extends ControllerBase
 
         $userTime->setTotal($totalTime);
         if($userTime->update() === false){
-            $messages = $userTime->getMessages();
-            foreach ($messages as $message){
-                echo $message, "\n";
-            }
+            $this->flash->error($userTime->getMessage());
         }
 
         return json_encode($endTime);
@@ -109,9 +116,6 @@ class TimesheetController extends ControllerBase
 
     protected function getAmountOfDays($month, $year)
     {
-//        $year = date('Y');
-//        $month = date('m');
-
         $last = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
         $date = new DateTime();
@@ -119,7 +123,6 @@ class TimesheetController extends ControllerBase
 
         for ($day=1;$day<=$last;$day++) {
             $date->setDate($year, $month, $day);
-
             $monthDay[$day]=$date->format("Y-m-d");
         }
         return $monthDay;

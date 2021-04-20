@@ -1,6 +1,8 @@
 <?php
 
-class WorkTime extends \Phalcon\Mvc\Model
+use Phalcon\Mvc\Model;
+
+class WorkTime extends Model
 {
 
     /**
@@ -47,6 +49,28 @@ class WorkTime extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var boolean
+     */
+    public $lateness;
+
+    /**
+     * @return bool
+     */
+    public function isLateness(): bool
+    {
+        return $this->lateness;
+    }
+
+    /**
+     * @param bool $lateness
+     */
+    public function setLateness(bool $lateness): void
+    {
+        $this->lateness = $lateness;
+    }
+
+    /**
+     *
      * @var integer
      */
     public $total;
@@ -63,7 +87,8 @@ class WorkTime extends \Phalcon\Mvc\Model
             'month' => 'month',
             'day' => 'day',
             'start_time' => 'start_time', 
-            'end_time' => 'end_time', 
+            'end_time' => 'end_time',
+            'lateness' => 'lateness',
             'total' => 'total'
         );
     }
