@@ -29,11 +29,9 @@ class LatenessController extends ControllerBase
                     $this->flash->success("Start day time was created successfully");
                     $form->clear();
                 }
-
             }
         }
         $this->view->form = $form;
-
     }
 
     public function listAction($id)
@@ -68,7 +66,5 @@ class LatenessController extends ControllerBase
             'controller' => 'lateness',
             'action'     => 'index',
         ]);
-
     }
-
 }

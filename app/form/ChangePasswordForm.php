@@ -8,7 +8,6 @@ use Phalcon\Validation\Validator\Confirmation;
 
 class ChangePasswordForm extends Form
 {
-
     public function initialize()
     {
         // Password

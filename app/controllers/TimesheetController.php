@@ -3,6 +3,17 @@
 
 class TimesheetController extends ControllerBase
 {
+    private $months;
+    private $years;
+
+    public function initialize()
+    {
+        $monthPath = $_SERVER['DOCUMENT_ROOT'].'/working_time/app/config/month.php';
+        $this->months = include($monthPath);
+        $yearPath = $_SERVER['DOCUMENT_ROOT'].'/working_time/app/config/year.php';
+        $this->years = include($yearPath);
+    }
+
     public function indexAction()
     {
         $currentTime = new DateTime();
@@ -13,19 +24,8 @@ class TimesheetController extends ControllerBase
             $getMonthUsers = $currentTime->format('m');
             $getYearUsers = $currentTime->format('Y');
         }
-
-
-        $this->view->getMonthUsers = $getMonthUsers;
-        $this->view->getYearUsers = $getYearUsers;
-
-        //Get current time
-
-        $this->view->currentTime = $currentTime->format('Y-m-d');
-
-        //Get all users
         $users = Users::find();
         $this->view->users = $users;
-
         //Get all workTime
         $workTime = WorkTime::find([
             "conditions" => "month = ?0 AND year = ?1",
@@ -34,14 +34,6 @@ class TimesheetController extends ControllerBase
                 $getYearUsers
             ]
         ]);
-        $this->view->workTime = $workTime;
-
-        //Array of months and years
-        $months = [1=>'January', 2=>'February', 3=>'March', 4=>'April', 5=>'May', 6=>'June', 7=>'July ', 8=>'August',
-            9=>'September', 10=>'October', 11=>'November', 12=>'December',];
-        $years = [2015=>'2015', 2016=>'2016', 2017=>'2017', 2018=>'2018', 2019=>'2019', 2020=>'2020', 2021=>'2021'];
-        $this->view->months = $months;
-        $this->view->years = $years;
 
         //Generate days for table
         $holidays = Holidays::find();
@@ -53,8 +45,13 @@ class TimesheetController extends ControllerBase
         $startDayTime = StartDayTime::findFirst();
         $startDay = $startDayTime->getTime();
         $this->view->startDay = $startDay;
-
+        $this->view->getMonthUsers = $getMonthUsers;
+        $this->view->getYearUsers = $getYearUsers;
+        $this->view->currentTime = $currentTime->format('Y-m-d');
         $this->view->holidaysDate = $holidaysDate;
+        $this->view->workTime = $workTime;
+        $this->view->months = $this->months;
+        $this->view->years = $this->years;
         $this->view->days = $this->getAmountOfDays($getMonthUsers, $getYearUsers);
     }
 
@@ -76,14 +73,8 @@ class TimesheetController extends ControllerBase
 
         $startTime->setDay($dateTime->format('d'));
 
-        if ($startTime->save() === false) {
-            echo "Мы не можем сохранить: \n";
-
-            $messages = $startTime->getMessages();
-
-            foreach ($messages as $message) {
-                echo $message, "\n";
-            }
+        if (!$startTime->save()) {
+            $this->flash->error('Start Time was not save');
         }
 
         $userTimeId = $startTime->getId();
@@ -94,7 +85,6 @@ class TimesheetController extends ControllerBase
         ];
 
         return json_encode($data);
-
     }
 
     public function createEndAction()
@@ -121,7 +111,7 @@ class TimesheetController extends ControllerBase
         $date = new DateTime();
         $monthDay = [];
 
-        for ($day=1;$day<=$last;$day++) {
+        for ($day = 1; $day <= $last; $day++) {
             $date->setDate($year, $month, $day);
             $monthDay[$day]=$date->format("Y-m-d");
         }

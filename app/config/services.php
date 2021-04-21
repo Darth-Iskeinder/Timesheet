@@ -1,5 +1,6 @@
 <?php
 
+use App\Plugins\SecurityPlugin;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Url as UrlResolver;

@@ -37,11 +37,8 @@ class SessionController extends ControllerBase
                 ]
             ]);
 
-
             if($user !== false){
-
                 if($user->getActive() == 'N'){
-
                     $this->flash->error("User Deactivate");
                     return $this->response->redirect('session/login');
                 }
@@ -50,16 +47,11 @@ class SessionController extends ControllerBase
                 if($user->getRole() === 'admin'){
                     return $this->response->redirect('user/index');
                 }
-
                 return $this->response->redirect('timesheet/index');
             }
-
             $this->flash->error('Wrong email/password');
-
         }
         return $this->response->redirect('session/login');
-
-
     }
 
     public function logoutAction()

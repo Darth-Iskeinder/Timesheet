@@ -35,7 +35,5 @@ class HolidaysForm extends Form
         ]);
 
         $this->add($date);
-
     }
-
 }

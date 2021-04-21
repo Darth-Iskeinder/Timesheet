@@ -55,8 +55,8 @@ class   UserForm extends Form
         $active = new Select(
             'active',
             [
-                0 => "Y",
-                1 => "N"
+                'Y' => "Y",
+                'N' => "N"
             ]
         );
         $active->setLabel('Active');
@@ -72,8 +72,8 @@ class   UserForm extends Form
         $role = new Select(
             'role',
             [
-                0 => 'user',
-                1 => 'admin'
+                'user' => 'user',
+                'admin' => 'admin'
             ]
         );
         $role->setLabel('role');
@@ -93,7 +93,5 @@ class   UserForm extends Form
         ]);
 
         $this->add($password);
-
     }
-
 }

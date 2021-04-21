@@ -3,6 +3,15 @@
 
 class TimeController extends ControllerBase
 {
+    private $months;
+    private $years;
+    public function initialize()
+    {
+        $monthPath = $_SERVER['DOCUMENT_ROOT'].'/working_time/app/config/month.php';
+        $this->months = include($monthPath);
+        $yearPath = $_SERVER['DOCUMENT_ROOT'].'/working_time/app/config/year.php';
+        $this->years = include($yearPath);
+    }
     public function indexAction($id)
     {
         $currentDate = new DateTime();
@@ -14,10 +23,6 @@ class TimeController extends ControllerBase
             $getYear = $currentDate->format('Y');
         }
 
-        $months = [1=>'January', 2=>'February', 3=>'March', 4=>'April', 5=>'May', 6=>'June', 7=>'July ', 8=>'August',
-            9=>'September', 10=>'October', 11=>'November', 12=>'December',];
-        $years = [2015=>'2015', 2016=>'2016', 2017=>'2017', 2018=>'2018', 2019=>'2019', 2020=>'2020', 2021=>'2021'];
-
         $userTimes = WorkTime::find([
             "conditions" => "user_id = ?0 AND month = ?1 AND year = ?2",
             "bind" => [
@@ -28,8 +33,8 @@ class TimeController extends ControllerBase
         ]);
         $this->view->getMonth = $getMonth;
         $this->view->getYear = $getYear;
-        $this->view->years = $years;
-        $this->view->months = $months;
+        $this->view->years = $this->years;
+        $this->view->months = $this->months;
         $this->view->userId = $id;
         $this->view->userTimes = $userTimes;
     }
@@ -50,7 +55,7 @@ class TimeController extends ControllerBase
                 $workTime->setMonth($this->request->getPost('month'));
                 $workTime->setDay($this->request->getPost('day'));
                 $workTime->setStartTime($this->request->getPost('startTime'));
-                $workTime->setEndTime($this->request->getPost('endTime'));
+                $workTime->setEndTime($this->request->getPost('end_time'));
                 $workTime->setTotal($this->request->getPost('total'));
 
                 if(!$workTime->save()){
@@ -59,7 +64,6 @@ class TimeController extends ControllerBase
                     $this->flash->success("WorkTime was created successfully");
                     $form->clear();
                 }
-
             }
         }
         $this->view->form = $form;
@@ -136,5 +140,4 @@ class TimeController extends ControllerBase
             'params'     => [$userId],
         ]);
     }
-
 }

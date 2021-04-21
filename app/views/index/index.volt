@@ -2,7 +2,7 @@
 
 <div class="jumbotron" id="overview">
     <div class="container-fluid">
-        <h1 class="display-3">Welcome to Timesheet!</h1>
+        <h1 class="display-3">Welcome to Timesheet Tracker!</h1>
         <p class="lead">This is a timesheet platform</p>
 
         <div align="right">

@@ -25,10 +25,7 @@ class HolidayController extends ControllerBase
                     $form->clear();
                 }
             }
-
         }
         $this->view->form = $form;
-
     }
-
 }

@@ -44,10 +44,8 @@ class UserController extends ControllerBase
                     $form->clear();
                 }
             }
-
         }
         $this->view->form = $form;
-
     }
 
     public function updateAction($id)
@@ -63,9 +61,7 @@ class UserController extends ControllerBase
 
             return;
         }
-
         $this->view->form = new UserForm($user, ['edit' => true]);
-
     }
 
     public function saveAction()
@@ -139,9 +135,7 @@ class UserController extends ControllerBase
         }
         $user->setActive('N');
         if (!$user->save()) {
-            foreach ($user->getMessages() as $message) {
-                $this->flash->error($message);
-            }
+            $this->flash->error('User active field not changed');
 
             $this->dispatcher->forward([
                 'controller' => 'user',
@@ -156,8 +150,6 @@ class UserController extends ControllerBase
             'controller' => 'user',
             'action'     => 'index',
         ]);
-
-
     }
 
     public function changePasswordAction()
@@ -187,6 +179,5 @@ class UserController extends ControllerBase
 
         $this->view->form = $form;
     }
-
 
 }

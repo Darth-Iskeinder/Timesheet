@@ -9,6 +9,9 @@ $loader->registerDirs(
     array(
         $config->application->controllersDir,
         $config->application->modelsDir,
-        $config->application->formDir
+        $config->application->formDir,
+        $config->application->libraryDir,
+        $config->application->pluginsDir
     )
 )->register();
+date_default_timezone_set('Asia/Bishkek');
