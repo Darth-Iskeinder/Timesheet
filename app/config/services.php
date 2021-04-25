@@ -11,6 +11,7 @@ use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Security;
 use Phalcon\Flash\Direct as FlashDirect;
 use Phalcon\Flash\Session as FlashSession;
+use Phalcon\Mvc\Router;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
@@ -108,3 +109,10 @@ $di->set(
         return new FlashSession();
     }
 );
+
+/**
+ * Loading routes from the routes.php file
+ */
+$di->set('router', function () {
+     return require BASE_PATH. '/app/config/routes.php';
+});

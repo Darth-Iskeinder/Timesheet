@@ -69,10 +69,7 @@ class TimeController extends ControllerBase
         if(!$workTime){
             $this->flash->error('Work time was not found');
 
-            $this->dispatcher->forward([
-                'controller' => 'time',
-                'action'     => 'index',
-            ]);
+            $this->response->redrect('/timesheet');
             return;
         }
         $this->view->userId = $userId;
@@ -83,7 +80,7 @@ class TimeController extends ControllerBase
     public function saveAction()
     {
         if(!$this->request->isPost()){
-            $this->response->redirect('user/index');
+            $this->response->redirect('/user');
         }
         $workTimeId = $this->request->getPost('id');
         $workTime = WorkTime::findFirstById($workTimeId);
@@ -91,11 +88,9 @@ class TimeController extends ControllerBase
         if(!$workTime){
             $this->flash->error('WorkTime was not found');
             $this->dispatcher->forward([
-                'controller' => 'time',
                 'action'     => 'index',
                 'params'     => [$userId],
             ]);
-            return;
         }
         $form = new TimeForm();
         $this->view->form = $form;
@@ -105,28 +100,23 @@ class TimeController extends ControllerBase
                 $this->flash->error($message);
             }
             $this->dispatcher->forward([
-                'controller' => 'time',
                 'action'     => 'update',
                 'params'     => [$workTimeId],
             ]);
-            return;
         }
         if(!$workTime->save()){
             foreach ($workTime->getMessages() as $message){
                 $this->flash->error($message);
             }
             $this->dispatcher->forward([
-                'controller' => 'time',
                 'action'     => 'update',
                 'params'     => [$workTimeId],
             ]);
-            return;
         }
         $form->clear();
         $this->flash->success('WorkTime was updated successfully');
 
         $this->dispatcher->forward([
-            'controller' => 'time',
             'action'     => 'index',
             'params'     => [$userId],
         ]);

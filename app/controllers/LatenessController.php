@@ -55,15 +55,11 @@ class LatenessController extends ControllerBase
                 $this->flash->error($message);
             }
             $this->dispatcher->forward([
-                'controller' => 'lateness',
                 'action'     => 'index',
             ]);
-
-            return;
         }
         $this->flash->success('Lateness id'.' '.$lateness->getId() .' '.'was deleted');
         $this->dispatcher->forward([
-            'controller' => 'lateness',
             'action'     => 'index',
         ]);
     }

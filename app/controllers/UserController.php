@@ -54,10 +54,7 @@ class UserController extends ControllerBase
         if (!$user) {
             $this->flash->error('Product was not found');
 
-            $this->dispatcher->forward([
-                'controller' => 'products',
-                'action'     => 'index',
-            ]);
+            $this->response->redirect('/user');
         }
         $this->view->form = new UserForm($user, ['edit' => true]);
     }
@@ -65,17 +62,14 @@ class UserController extends ControllerBase
     public function saveAction()
     {
         if (!$this->request->isPost()) {
-            $this->response->redirect('user/index');
+            $this->response->redirect('/user');
         }
         $id = $this->request->getPost('id');
         $user = Users::findFirstById($id);
         if (!$user) {
             $this->flash->error('User was not found');
 
-            $this->dispatcher->forward([
-                'controller' => 'user',
-                'action'     => 'index',
-            ]);
+            $this->response->redirect('/user');
         }
         $form = new UserForm();
         $this->view->form = $form;
@@ -86,7 +80,6 @@ class UserController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => 'user',
                 'action'     => 'update',
                 'params'     => $id,
             ]);
@@ -97,7 +90,6 @@ class UserController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => 'user',
                 'action'     => 'update',
                 'params'     => [$id],
             ]);
@@ -105,10 +97,7 @@ class UserController extends ControllerBase
         $form->clear();
         $this->flash->success('User was updated successfully');
 
-        $this->dispatcher->forward([
-            'controller' => 'user',
-            'action'     => 'index',
-        ]);
+        $this->response->redirect('/user');
 
     }
 
@@ -118,26 +107,17 @@ class UserController extends ControllerBase
         if (!$user) {
             $this->flash->error('User was not found');
 
-            $this->dispatcher->forward([
-                'controller' => 'user',
-                'action'     => 'index',
-            ]);
+            $this->response->redirect('/user');
         }
         $user->setActive('N');
         if (!$user->save()) {
             $this->flash->error('User active field not changed');
 
-            $this->dispatcher->forward([
-                'controller' => 'user',
-                'action'     => 'index',
-            ]);
+            $this->response->redirect('/user');
         }
         $this->flash->success($user->getName() .' '.'was deactivated');
 
-        $this->dispatcher->forward([
-            'controller' => 'user',
-            'action'     => 'index',
-        ]);
+        $this->response->redirect('/user');
     }
 
     public function changePasswordAction()

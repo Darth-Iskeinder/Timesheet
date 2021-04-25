@@ -4,11 +4,6 @@ use Phalcon\Forms\Form;
 
 class SessionController extends ControllerBase
 {
-    public function indexAction()
-    {
-
-    }
-
     public function loginAction()
     {
 
@@ -40,23 +35,27 @@ class SessionController extends ControllerBase
             if($user !== false){
                 if($user->getActive() == 'N'){
                     $this->flash->error("User Deactivate");
-                    return $this->response->redirect('session/login');
+                    return $this->response->redirect('/login');
                 }
                 $this->registerSession($user);
                 $this->flash->success("Welcome back " . $user->getName());
                 if($user->getRole() === 'admin'){
-                    return $this->response->redirect('user/index');
+                    return $this->response->redirect('/user');
                 }
-                return $this->response->redirect('timesheet/index');
+                return $this->response->redirect('/timesheet');
             }
             $this->flash->error('Wrong email/password');
         }
-        return $this->response->redirect('session/login');
+        return $this->dispatcher->forward([
+            'action' => 'index'
+        ]);
     }
 
     public function logoutAction()
     {
         $this->session->destroy();
-        return $this->response->redirect('session/login');
+        return $this->dispatcher->forward([
+            'action' => 'index'
+        ]);
     }
 }
