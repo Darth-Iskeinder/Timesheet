@@ -58,8 +58,6 @@ class UserController extends ControllerBase
                 'controller' => 'products',
                 'action'     => 'index',
             ]);
-
-            return;
         }
         $this->view->form = new UserForm($user, ['edit' => true]);
     }
@@ -78,8 +76,6 @@ class UserController extends ControllerBase
                 'controller' => 'user',
                 'action'     => 'index',
             ]);
-
-            return;
         }
         $form = new UserForm();
         $this->view->form = $form;
@@ -92,10 +88,8 @@ class UserController extends ControllerBase
             $this->dispatcher->forward([
                 'controller' => 'user',
                 'action'     => 'update',
-                'params'     => [$id],
+                'params'     => $id,
             ]);
-
-            return;
         }
         if (!$user->save()) {
             foreach ($user->getMessages() as $message) {
@@ -107,8 +101,6 @@ class UserController extends ControllerBase
                 'action'     => 'update',
                 'params'     => [$id],
             ]);
-
-            return;
         }
         $form->clear();
         $this->flash->success('User was updated successfully');
@@ -130,8 +122,6 @@ class UserController extends ControllerBase
                 'controller' => 'user',
                 'action'     => 'index',
             ]);
-
-            return;
         }
         $user->setActive('N');
         if (!$user->save()) {
@@ -141,8 +131,6 @@ class UserController extends ControllerBase
                 'controller' => 'user',
                 'action'     => 'index',
             ]);
-
-            return;
         }
         $this->flash->success($user->getName() .' '.'was deactivated');
 

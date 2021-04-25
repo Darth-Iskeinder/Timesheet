@@ -3,15 +3,6 @@
 
 class TimeController extends ControllerBase
 {
-    private $months;
-    private $years;
-    public function initialize()
-    {
-        $monthPath = $_SERVER['DOCUMENT_ROOT'].'/working_time/app/config/month.php';
-        $this->months = include($monthPath);
-        $yearPath = $_SERVER['DOCUMENT_ROOT'].'/working_time/app/config/year.php';
-        $this->years = include($yearPath);
-    }
     public function indexAction($id)
     {
         $currentDate = new DateTime();
@@ -33,8 +24,8 @@ class TimeController extends ControllerBase
         ]);
         $this->view->getMonth = $getMonth;
         $this->view->getYear = $getYear;
-        $this->view->years = $this->years;
-        $this->view->months = $this->months;
+        $this->view->years = $this->getYears();
+        $this->view->months = $this->getMonths();
         $this->view->userId = $id;
         $this->view->userTimes = $userTimes;
     }

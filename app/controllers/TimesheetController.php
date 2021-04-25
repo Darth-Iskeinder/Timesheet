@@ -3,17 +3,6 @@
 
 class TimesheetController extends ControllerBase
 {
-    private $months;
-    private $years;
-
-    public function initialize()
-    {
-        $monthPath = $_SERVER['DOCUMENT_ROOT'].'/working_time/app/config/month.php';
-        $this->months = include($monthPath);
-        $yearPath = $_SERVER['DOCUMENT_ROOT'].'/working_time/app/config/year.php';
-        $this->years = include($yearPath);
-    }
-
     public function indexAction()
     {
         $currentTime = new DateTime();
@@ -50,8 +39,8 @@ class TimesheetController extends ControllerBase
         $this->view->currentTime = $currentTime->format('Y-m-d');
         $this->view->holidaysDate = $holidaysDate;
         $this->view->workTime = $workTime;
-        $this->view->months = $this->months;
-        $this->view->years = $this->years;
+        $this->view->months = $this->getMonths();
+        $this->view->years = $this->getYears();
         $this->view->days = $this->getAmountOfDays($getMonthUsers, $getYearUsers);
     }
 
