@@ -7,6 +7,8 @@ class UserController extends ControllerBase
 {
     public function indexAction()
     {
+       // print_die("user index action");
+
         $currentDate = new DateTime();
         $this->view->year = $currentDate->format('Y');
         $this->view->month = $currentDate->format('m');
@@ -122,6 +124,9 @@ class UserController extends ControllerBase
 
     public function changePasswordAction()
     {
+
+
+
         $form = new ChangePasswordForm();
 
         if ($this->request->isPost()) {

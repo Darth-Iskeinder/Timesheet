@@ -19,6 +19,7 @@ class SessionController extends ControllerBase
 
     public function authorizeAction()
     {
+
         if($this->request->isPost()){
 
             $email = $this->request->getPost('email');
@@ -32,30 +33,43 @@ class SessionController extends ControllerBase
                 ]
             ]);
 
+
             if($user !== false){
+
                 if($user->getActive() == 'N'){
                     $this->flash->error("User Deactivate");
-                    return $this->response->redirect('/login');
+                    $this->dispatcher->forward([
+                        'action' => 'login'
+                    ]);
                 }
+
                 $this->registerSession($user);
                 $this->flash->success("Welcome back " . $user->getName());
+//                print_r($user->getRole()); die;
+
                 if($user->getRole() === 'admin'){
-                    return $this->response->redirect('/user');
+                   // return $this->response->redirect('user');
+                    return $this->dispatcher->forward([
+                        'controller' => 'user',
+                        'action' => 'index'
+                    ]);
+
                 }
-                return $this->response->redirect('/timesheet');
+                    return $this->response->redirect('timesheet');
+
             }
             $this->flash->error('Wrong email/password');
         }
-        return $this->dispatcher->forward([
-            'action' => 'index'
+        $this->dispatcher->forward([
+            'action' => 'login'
         ]);
     }
 
     public function logoutAction()
     {
         $this->session->destroy();
-        return $this->dispatcher->forward([
-            'action' => 'index'
+        $this->dispatcher->forward([
+            'action' => 'login'
         ]);
     }
 }

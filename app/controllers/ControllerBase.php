@@ -1,9 +1,55 @@
 <?php
 
 use Phalcon\Mvc\Controller;
+use Phalcon\Mvc\Dispatcher;
 
 class ControllerBase extends Controller
 {
+    public function beforeExecuteRoute(Dispatcher $dispatcher)
+    {
+
+        $controllerName = $dispatcher->getControllerName();
+       // print_die($dispatcher->getActionName());
+       // print_die($this->acl->isPrivate($controllerName));
+        if($this->acl->isPrivate($controllerName)){
+            $role = $this->session->auth['role'];
+
+            if(!$role){
+                $this->flash->notice('You don\'t have access to this module: private');
+                $dispatcher->forward([
+                    'controller' => 'index',
+                    'action' => 'index'
+                ]);
+                return false;
+            }
+         //   print_die(!$this->acl->isAllowed($role, $controllerName, $actionName));
+            // Check if the user have permission to the current option
+            $actionName = $dispatcher->getActionName();
+
+            echo 'Here';
+
+            if(!$this->acl->isAllowed($role, $controllerName, $actionName)){
+                echo 'Here';
+                $this->flash->notice('You don\'t have access to this module: ' . $controllerName . ':' . $actionName);
+
+                if ($this->acl->isAllowed($role, $controllerName, $actionName)) {
+                    $dispatcher->forward([
+                        'controller' => $controllerName,
+                        'action' => $actionName
+                    ]);
+                } else {
+                    $dispatcher->forward([
+                        'controller' => 'index',
+                        'action' => 'index'
+                    ]);
+                }
+                return false;
+            }
+
+        }
+
+    }
+
     public function getMonths()
     {
         $months = array();

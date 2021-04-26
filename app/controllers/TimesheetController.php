@@ -1,6 +1,8 @@
 <?php
-
-
+use Phalcon\Acl\Adapter\Memory as AclList;
+use Phalcon\Acl;
+use Phalcon\Acl\Role;
+use Phalcon\Acl\Resource;
 class TimesheetController extends ControllerBase
 {
     public function indexAction()

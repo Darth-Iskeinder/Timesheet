@@ -12,6 +12,7 @@ use Phalcon\Security;
 use Phalcon\Flash\Direct as FlashDirect;
 use Phalcon\Flash\Session as FlashSession;
 use Phalcon\Mvc\Router;
+use Phalcon\Mvc\Dispatcher;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
@@ -84,6 +85,21 @@ $di->set('session', function () {
     return $session;
 });
 
+$di->setShared('AclResources', function() {
+    $pr = [];
+    if (is_readable(BASE_PATH. '/app/config/privateResources.php')) {
+        $pr = include BASE_PATH. '/app/config/privateResources.php';
+    }
+    return $pr;
+});
+
+$di->set('acl', function () {
+    $acl = new Acl();
+    $pr = $this->getShared('AclResources')->privateResources->toArray();
+    $acl->addPrivateResources($pr);
+    return $acl;
+});
+
 $di->set(
     'security',
     function () {
@@ -115,4 +131,9 @@ $di->set(
  */
 $di->set('router', function () {
      return require BASE_PATH. '/app/config/routes.php';
+});
+
+$di->set('dispatcher', function () {
+    $dispatcher = new Dispatcher();
+    return $dispatcher;
 });
