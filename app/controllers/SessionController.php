@@ -19,42 +19,39 @@ class SessionController extends ControllerBase
 
     public function authorizeAction()
     {
-
         if($this->request->isPost()){
 
             $email = $this->request->getPost('email');
             $password = $this->request->getPost('password');
 
             $user = Users::findFirst([
-                "conditions" => "email = ?0 AND password = ?1",
+                "conditions" => "email = ?0",
                 "bind" => [
-                    0 => $email,
-                    1 => sha1($password)
+                    $email,
                 ]
             ]);
-
-
             if($user !== false){
+                if($user->getPassword() === sha1($password)){
+                    if($user->getActive() == 'N'){
+                        $this->flash->error("User Deactivate");
+                        $this->dispatcher->forward([
+                            'action' => 'login'
+                        ]);
+                    }
 
-                if($user->getActive() == 'N'){
-                    $this->flash->error("User Deactivate");
-                    $this->dispatcher->forward([
-                        'action' => 'login'
-                    ]);
-                }
+                    $this->registerSession($user);
+                    $this->flash->success("Welcome back " . $user->getName());
 
-                $this->registerSession($user);
-                $this->flash->success("Welcome back " . $user->getName());
+                    if($user->getRole() === 'admin'){
+                        return $this->dispatcher->forward([
+                            'controller' => 'user',
+                            'action' => 'index'
+                        ]);
 
-                if($user->getRole() === 'admin'){
-                    return $this->dispatcher->forward([
-                        'controller' => 'user',
-                        'action' => 'index'
-                    ]);
-
-                }
+                    }
                     return $this->response->redirect('timesheet');
 
+                }
             }
             $this->flash->error('Wrong email/password');
         }
