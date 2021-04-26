@@ -16,7 +16,7 @@ class TimesheetController extends ControllerBase
             $getYearUsers = $currentTime->format('Y');
         }
         $users = Users::find();
-        $this->view->users = $users;
+
         //Get all workTime
         $workTime = WorkTime::find([
             "conditions" => "month = ?0 AND year = ?1",
@@ -35,15 +35,20 @@ class TimesheetController extends ControllerBase
         }
         $startDayTime = StartDayTime::findFirst();
         $startDay = $startDayTime->getTime();
-        $this->view->startDay = $startDay;
-        $this->view->getMonthUsers = $getMonthUsers;
-        $this->view->getYearUsers = $getYearUsers;
-        $this->view->currentTime = $currentTime->format('Y-m-d');
-        $this->view->holidaysDate = $holidaysDate;
-        $this->view->workTime = $workTime;
-        $this->view->months = $this->getMonths();
-        $this->view->years = $this->getYears();
-        $this->view->days = $this->getAmountOfDays($getMonthUsers, $getYearUsers);
+        $this->view->setVars(
+            [
+                'users' => $users,
+                'startDay'    => $startDay,
+                'getMonthUsers'    => $getMonthUsers,
+                'getYearUsers'    => $getYearUsers,
+                'currentTime'    => $currentTime->format('Y-m-d'),
+                'holidaysDate'    => $holidaysDate,
+                'workTime'    => $workTime,
+                'months'    => $this->getMonths(),
+                'years'    => $this->getYears(),
+                'days'    => $this->getAmountOfDays($getMonthUsers, $getYearUsers)
+            ]
+        );
     }
 
     public function createStartAction()

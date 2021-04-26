@@ -10,13 +10,17 @@ class UserController extends ControllerBase
        // print_die("user index action");
 
         $currentDate = new DateTime();
-        $this->view->year = $currentDate->format('Y');
-        $this->view->month = $currentDate->format('m');
-        $this->view->day = $currentDate->format('d');
         $users = Users::find();
-        $this->view->users = $users;
         $userTime = WorkTime::find();
-        $this->view->userTime = $userTime;
+        $this->view->setVars(
+            [
+                'year' => $currentDate->format('Y'),
+                'month'    => $currentDate->format('m'),
+                'day'    => $currentDate->format('d'),
+                'users'    => $users,
+                'userTime'    => $userTime,
+            ]
+        );
 
     }
 
@@ -124,9 +128,6 @@ class UserController extends ControllerBase
 
     public function changePasswordAction()
     {
-
-
-
         $form = new ChangePasswordForm();
 
         if ($this->request->isPost()) {

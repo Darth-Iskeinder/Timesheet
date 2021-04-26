@@ -22,12 +22,16 @@ class TimeController extends ControllerBase
                 $getYear
             ]
         ]);
-        $this->view->getMonth = $getMonth;
-        $this->view->getYear = $getYear;
-        $this->view->years = $this->getYears();
-        $this->view->months = $this->getMonths();
-        $this->view->userId = $id;
-        $this->view->userTimes = $userTimes;
+        $this->view->setVars(
+            [
+                'getMonth' => $getMonth,
+                'getYear'    => $getYear,
+                'years'    => $this->getYears(),
+                'months'    => $this->getMonths(),
+                'userId'    => $id,
+                'userTimes'    => $userTimes,
+            ]
+        );
     }
 
     public function createAction()

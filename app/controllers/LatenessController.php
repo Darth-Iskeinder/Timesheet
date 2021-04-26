@@ -42,8 +42,12 @@ class LatenessController extends ControllerBase
                 $id
             ]
         ]);
-        $this->view->id = $id;
-        $this->view->userLateness = $userLateness;
+        $this->view->setVars(
+            [
+                'id' => $id,
+                'userLateness'    => $userLateness,
+            ]
+        );
     }
 
     public function deleteAction($id)
