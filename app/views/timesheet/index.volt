@@ -10,7 +10,7 @@
     {% endif %}
 
     {{ link_to(
-                         'user/changePassword',
+                         'timesheet/changePassword',
                          'Change password',
                          'class': 'btn btn-primary btn-lg'
                         )

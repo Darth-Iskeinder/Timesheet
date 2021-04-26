@@ -120,30 +120,6 @@ class UserController extends ControllerBase
         $this->response->redirect('/user');
     }
 
-    public function changePasswordAction()
-    {
-        $form = new ChangePasswordForm();
 
-        if ($this->request->isPost()) {
-            if (!$form->isValid($this->request->getPost())) {
-                $this->flash->error('ChangeForm is not valid!');
-            } else {
-                $auth = $this->session->get('auth');
-                $user = Users::findFirstById($auth['id']);
-
-                $user->setPassword(sha1($this->request->getPost('password')));;
-
-                if (!$user->save()) {
-                    $this->flash->error($user->getMessages());
-                } else {
-                    $this->flash->success('Your password was successfully changed');
-
-                    $form->clear();
-                }
-            }
-        }
-
-        $this->view->form = $form;
-    }
 
 }

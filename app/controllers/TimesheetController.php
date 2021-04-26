@@ -106,4 +106,29 @@ class TimesheetController extends ControllerBase
         }
         return $monthDay;
     }
+
+    public function changePasswordAction()
+    {
+        $form = new ChangePasswordForm();
+
+        if ($this->request->isPost()) {
+            $auth = $this->session->get('auth');
+            $user = Users::findFirstById($auth['id']);
+            if(sha1($this->request->getPost('oldPassword')) === $user->getPassword()){
+                $user->setPassword(sha1($this->request->getPost('password')));
+                if (!$user->save()) {
+                    $this->flash->error('Password doesnt saved');
+                } else {
+                    $this->flash->success('Your password was successfully changed');
+
+                    $form->clear();
+                }
+            } else{
+                $form->clear();
+                $this->flash->error('Old password is not correct!');
+            }
+        }
+
+        $this->view->form = $form;
+    }
 }

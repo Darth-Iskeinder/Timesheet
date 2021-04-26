@@ -20,11 +20,7 @@ class ControllerBase extends Controller
                 ]);
                 return false;
             }
-         //   print_die(!$this->acl->isAllowed($role, $controllerName, $actionName));
-            // Check if the user have permission to the current option
             $actionName = $dispatcher->getActionName();
-
-            echo 'Here';
 
             if(!$this->acl->isAllowed($role, $controllerName, $actionName)){
                 echo 'Here';

@@ -10,6 +10,27 @@ class ChangePasswordForm extends Form
 {
     public function initialize()
     {
+        // Old Password
+        $oldPassword = new Password('oldPassword');
+
+        $oldPassword->setLabel('Old Password');
+
+        $oldPassword->addValidators([
+            new PresenceOf([
+                'message' => 'Password is required'
+            ]),
+            new StringLength([
+                'min' => 3,
+                'messageMinimum' => 'Password is too short. Minimum 3 characters'
+            ]),
+            new Confirmation([
+                'message' => 'Password doesn\'t match confirmation',
+                'with' => 'confirmPassword'
+            ])
+        ]);
+
+        $this->add($oldPassword);
+
         // Password
         $password = new Password('password');
 

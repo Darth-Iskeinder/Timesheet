@@ -2,7 +2,7 @@
 <div class=container><?php if (empty($logged_in)) { ?><?= $this->tag->linkTo(['session/logout', 'Logout', 'class' => 'btn btn-primary btn-lg']) ?>
     <?php } ?>
 
-    <?= $this->tag->linkTo(['user/changePassword', 'Change password', 'class' => 'btn btn-primary btn-lg']) ?>
+    <?= $this->tag->linkTo(['timesheet/changePassword', 'Change password', 'class' => 'btn btn-primary btn-lg']) ?>
 <select id="select-month-users" selected="selected">
         <?php foreach ($months as $key => $month) { ?>
             <option value="<?= $key ?>"><?= $month ?></option>
