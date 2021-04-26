@@ -75,6 +75,38 @@ class WorkTime extends Model
      */
     public $total;
 
+    public static function getTimesByMonthAndYear($getMonthUsers, $getYearUsers)
+    {
+        return self::find([
+            "conditions" => "month = ?0 AND year = ?1",
+            "bind" => [
+                $getMonthUsers,
+                $getYearUsers
+            ]
+        ]);
+    }
+
+    public static function getUserLateness($id)
+    {
+        return self::find([
+            "conditions" => "user_id = ?0 AND lateness = 1",
+            "bind" => [
+                $id
+            ]
+        ]);
+    }
+
+    public static function getUserByMothYear($id, $getMonth, $getYear)
+    {
+        return self::find([
+            "conditions" => "user_id = ?0 AND month = ?1 AND year = ?2",
+            "bind" => [
+                $id,
+                $getMonth,
+                $getYear
+            ]
+        ]);
+    }
     /**
      * Independent Column Mapping.
      */

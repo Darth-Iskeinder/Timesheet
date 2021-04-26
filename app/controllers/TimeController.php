@@ -14,14 +14,7 @@ class TimeController extends ControllerBase
             $getYear = $currentDate->format('Y');
         }
 
-        $userTimes = WorkTime::find([
-            "conditions" => "user_id = ?0 AND month = ?1 AND year = ?2",
-            "bind" => [
-                $id,
-                $getMonth,
-                $getYear
-            ]
-        ]);
+        $userTimes = WorkTime::getUserByMothYear($id, $getMonth, $getYear);
         $this->view->setVars(
             [
                 'getMonth' => $getMonth,

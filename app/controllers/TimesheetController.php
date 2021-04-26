@@ -18,14 +18,7 @@ class TimesheetController extends ControllerBase
         $users = Users::find();
 
         //Get all workTime
-        $workTime = WorkTime::find([
-            "conditions" => "month = ?0 AND year = ?1",
-            "bind" => [
-                $getMonthUsers,
-                $getYearUsers
-            ]
-        ]);
-
+        $workTime = WorkTime::getTimesByMonthAndYear($getMonthUsers, $getYearUsers);
         //Generate days for table
         $holidays = Holidays::find();
         $holidaysArray = $holidays->toArray();

@@ -36,12 +36,7 @@ class LatenessController extends ControllerBase
 
     public function listAction($id)
     {
-        $userLateness = WorkTime::find([
-            "conditions" => "user_id = ?0 AND lateness = 1",
-            "bind" => [
-                $id
-            ]
-        ]);
+        $userLateness = WorkTime::getUserLateness($id);
         $this->view->setVars(
             [
                 'id' => $id,

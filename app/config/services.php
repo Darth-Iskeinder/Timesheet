@@ -13,6 +13,7 @@ use Phalcon\Flash\Direct as FlashDirect;
 use Phalcon\Flash\Session as FlashSession;
 use Phalcon\Mvc\Router;
 use Phalcon\Mvc\Dispatcher;
+use Phalcon\Mvc\Model\Manager as ModelsManager;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
@@ -137,3 +138,10 @@ $di->set('dispatcher', function () {
     $dispatcher = new Dispatcher();
     return $dispatcher;
 });
+
+$di->set(
+    "modelsManager",
+    function() {
+        return new ModelsManager();
+    }
+);
