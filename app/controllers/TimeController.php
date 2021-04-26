@@ -31,27 +31,21 @@ class TimeController extends ControllerBase
     {
         $form = new TimeForm();
         if($this->request->isPost()){
-            if($form->isValid($this->request->getPost()) == false){
-                foreach ($form->getMessage() as $message){
-                    $this->flash->error($message);
-                }
-            } else {
-                $workTime = new WorkTime();
+            $workTime = new WorkTime();
 
-                $workTime->setUserId($this->request->getPost('userId'));
-                $workTime->setYear($this->request->getPost('year'));
-                $workTime->setMonth($this->request->getPost('month'));
-                $workTime->setDay($this->request->getPost('day'));
-                $workTime->setStartTime($this->request->getPost('startTime'));
-                $workTime->setEndTime($this->request->getPost('end_time'));
-                $workTime->setTotal($this->request->getPost('total'));
+            $workTime->setUserId($this->request->getPost('userId'));
+            $workTime->setYear($this->request->getPost('year'));
+            $workTime->setMonth($this->request->getPost('month'));
+            $workTime->setDay($this->request->getPost('day'));
+            $workTime->setStartTime($this->request->getPost('startTime'));
+            $workTime->setEndTime($this->request->getPost('end_time'));
+            $workTime->setTotal($this->request->getPost('total'));
 
-                if(!$workTime->save()){
-                    $this->flash->error($workTime->getMessage());
-                } else{
-                    $this->flash->success("WorkTime was created successfully");
-                    $form->clear();
-                }
+            if(!$workTime->save()){
+                $this->flash->error($workTime->getMessage());
+            } else{
+                $this->flash->success("WorkTime was created successfully");
+                $form->clear();
             }
         }
         $this->view->form = $form;
@@ -93,18 +87,16 @@ class TimeController extends ControllerBase
         $this->view->form = $form;
         $data = $this->request->getPost();
         if(!$form->isValid($data, $workTime)){
-            foreach ($form->getMessages() as $message){
-                $this->flash->error($message);
-            }
+            $this->flash->error('Form is not valid!');
+
             $this->dispatcher->forward([
                 'action'     => 'update',
                 'params'     => [$workTimeId],
             ]);
         }
         if(!$workTime->save()){
-            foreach ($workTime->getMessages() as $message){
-                $this->flash->error($message);
-            }
+            $this->flash->error('Form is not save!');
+
             $this->dispatcher->forward([
                 'action'     => 'update',
                 'params'     => [$workTimeId],

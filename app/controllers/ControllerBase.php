@@ -9,8 +9,6 @@ class ControllerBase extends Controller
     {
 
         $controllerName = $dispatcher->getControllerName();
-       // print_die($dispatcher->getActionName());
-       // print_die($this->acl->isPrivate($controllerName));
         if($this->acl->isPrivate($controllerName)){
             $role = $this->session->auth['role'];
 
@@ -52,7 +50,7 @@ class ControllerBase extends Controller
 
     public function getMonths()
     {
-        $months = array();
+        $months = [];
         for ($i = 1; $i < 13; $i++) {
             $timestamp = mktime(0, 0, 0, date('n') - $i, 1);
             $months[date('n', $timestamp)] = date('F', $timestamp);
@@ -63,9 +61,8 @@ class ControllerBase extends Controller
     public function getYears()
     {
         $years = [];
-        $workTimes = WorkTime::find();
-        $workTimeArray = $workTimes->toArray();
-        foreach ($workTimeArray as $workTime){
+        $workTimes = WorkTime::find()->toArray();
+        foreach ($workTimes as $workTime){
             $years[$workTime['year']] = $workTime['year'];
         }
         return array_unique($years);

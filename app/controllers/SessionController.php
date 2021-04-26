@@ -45,10 +45,8 @@ class SessionController extends ControllerBase
 
                 $this->registerSession($user);
                 $this->flash->success("Welcome back " . $user->getName());
-//                print_r($user->getRole()); die;
 
                 if($user->getRole() === 'admin'){
-                   // return $this->response->redirect('user');
                     return $this->dispatcher->forward([
                         'controller' => 'user',
                         'action' => 'index'

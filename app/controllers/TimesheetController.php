@@ -7,6 +7,7 @@ class TimesheetController extends ControllerBase
 {
     public function indexAction()
     {
+        $this->getYears();
         $currentTime = new DateTime();
         if($this->request->get('monthUsers') && $this->request->get('yearUsers')){
             $getMonthUsers = $this->request->get('monthUsers');
@@ -20,10 +21,9 @@ class TimesheetController extends ControllerBase
         //Get all workTime
         $workTime = WorkTime::getTimesByMonthAndYear($getMonthUsers, $getYearUsers);
         //Generate days for table
-        $holidays = Holidays::find();
-        $holidaysArray = $holidays->toArray();
+        $holidays = Holidays::find()->toArray();
         $holidaysDate = [];
-        foreach ($holidaysArray as $holiday){
+        foreach ($holidays as $holiday){
             $holidaysDate[] = $holiday['date'];
         }
         $startDayTime = StartDayTime::findFirst();

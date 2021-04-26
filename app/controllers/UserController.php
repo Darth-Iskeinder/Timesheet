@@ -30,9 +30,8 @@ class UserController extends ControllerBase
 
         if ($this->request->isPost()) {
             if($form->isValid($this->request->getPost()) == false){
-                foreach ($form->getMessages() as $message){
-                    $this->flash->error($message);
-                }
+                $this->flash->error('UserForm is not valid!');
+
             } else {
                 $user = new Users();
 
@@ -81,19 +80,14 @@ class UserController extends ControllerBase
         $this->view->form = $form;
         $data = $this->request->getPost();
         if (!$form->isValid($data, $user)) {
-            foreach ($form->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-
+            $this->flash->error('UserForm is not valid!');
             $this->dispatcher->forward([
                 'action'     => 'update',
                 'params'     => $id,
             ]);
         }
         if (!$user->save()) {
-            foreach ($user->getMessages() as $message) {
-                $this->flash->error($message);
-            }
+            $this->flash->error('User was not saved!');
 
             $this->dispatcher->forward([
                 'action'     => 'update',
@@ -132,9 +126,7 @@ class UserController extends ControllerBase
 
         if ($this->request->isPost()) {
             if (!$form->isValid($this->request->getPost())) {
-                foreach ($form->getMessages() as $message) {
-                    $this->flash->error($message);
-                }
+                $this->flash->error('ChangeForm is not valid!');
             } else {
                 $auth = $this->session->get('auth');
                 $user = Users::findFirstById($auth['id']);

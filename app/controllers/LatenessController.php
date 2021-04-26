@@ -14,21 +14,15 @@ class LatenessController extends ControllerBase
     {
         $form = new StartDayTimeForm();
         if($this->request->isPost()){
-            if($form->isValid($this->request->getPost()) == false){
-                foreach ($form->getMessage() as $message){
-                    $this->flash->error($message);
-                }
-            } else {
-                $startDayTime = new StartDayTime();
+            $startDayTime = new StartDayTime();
 
-                $startDayTime->setTime($this->request->getPost('time'));
+            $startDayTime->setTime($this->request->getPost('time'));
 
-                if(!$startDayTime->save()){
-                    $this->flash->error($startDayTime->getMessage());
-                } else{
-                    $this->flash->success("Start day time was created successfully");
-                    $form->clear();
-                }
+            if(!$startDayTime->save()){
+                $this->flash->error($startDayTime->getMessage());
+            } else{
+                $this->flash->success("Start day time was created successfully");
+                $form->clear();
             }
         }
         $this->view->form = $form;
@@ -50,9 +44,6 @@ class LatenessController extends ControllerBase
         $lateness = WorkTime::findFirstById($id);
         $lateness->setLateness(0);
         if(!$lateness->save()){
-            foreach ($lateness->getMessages() as $message){
-                $this->flash->error($message);
-            }
             $this->dispatcher->forward([
                 'action'     => 'index',
             ]);
