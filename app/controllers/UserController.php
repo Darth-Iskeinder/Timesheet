@@ -1,29 +1,32 @@
 <?php
 
-use Phalcon\Forms\Form;
-use Phalcon\Mvc\Model;
-
+/**
+ * Class UserController
+ */
 class UserController extends ControllerBase
 {
+    /**
+     *List of users for admin
+     */
     public function indexAction()
     {
-       // print_die("user index action");
-
         $currentDate = new DateTime();
         $users = Users::find();
         $userTime = WorkTime::find();
         $this->view->setVars(
             [
-                'year' => $currentDate->format('Y'),
-                'month'    => $currentDate->format('m'),
-                'day'    => $currentDate->format('d'),
+                'year' => $this->getCurrentDateTime()->format('Y'),
+                'month' => $this->getCurrentDateTime()->format('m'),
+                'day' => $this->getCurrentDateTime()->format('d'),
                 'users'    => $users,
                 'userTime'    => $userTime,
             ]
         );
-
     }
 
+    /**
+     * Create new user
+     */
     public function createAction()
     {
         $form = new UserForm();
@@ -53,6 +56,10 @@ class UserController extends ControllerBase
         $this->view->form = $form;
     }
 
+    /**
+     * Update user by id
+     * @param int $id
+     */
     public function updateAction($id)
     {
         $user = Users::findFirstById($id);
@@ -64,6 +71,9 @@ class UserController extends ControllerBase
         $this->view->form = new UserForm($user, ['edit' => true]);
     }
 
+    /**
+     * Save updated user
+     */
     public function saveAction()
     {
         if (!$this->request->isPost()) {
@@ -98,9 +108,12 @@ class UserController extends ControllerBase
         $this->flash->success('User was updated successfully');
 
         $this->response->redirect('/user');
-
     }
 
+    /**
+     * Deactivate user
+     * @param int $id
+     */
     public function deleteAction($id)
     {
         $user = Users::findFirstById($id);
@@ -119,7 +132,4 @@ class UserController extends ControllerBase
 
         $this->response->redirect('/user');
     }
-
-
-
 }

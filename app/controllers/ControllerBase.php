@@ -3,29 +3,34 @@
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Dispatcher;
 
+/**
+ * Class ControllerBase
+ */
 class ControllerBase extends Controller
 {
+    /**
+     * Dispatch controller/action names
+     * @param Dispatcher $dispatcher
+     * @return false
+     */
     public function beforeExecuteRoute(Dispatcher $dispatcher)
     {
-
         $controllerName = $dispatcher->getControllerName();
         if($this->acl->isPrivate($controllerName)){
             $role = $this->session->auth['role'];
-
             if(!$role){
                 $this->flash->notice('You don\'t have access to this module: private');
                 $dispatcher->forward([
                     'controller' => 'index',
                     'action' => 'index'
                 ]);
+
                 return false;
             }
             $actionName = $dispatcher->getActionName();
-
             if(!$this->acl->isAllowed($role, $controllerName, $actionName)){
                 echo 'Here';
                 $this->flash->notice('You don\'t have access to this module: ' . $controllerName . ':' . $actionName);
-
                 if ($this->acl->isAllowed($role, $controllerName, $actionName)) {
                     $dispatcher->forward([
                         'controller' => $controllerName,
@@ -37,13 +42,16 @@ class ControllerBase extends Controller
                         'action' => 'index'
                     ]);
                 }
+
                 return false;
             }
-
         }
-
     }
 
+    /**
+     * Get array of months
+     * @return array
+     */
     public function getMonths()
     {
         $months = [];
@@ -51,9 +59,14 @@ class ControllerBase extends Controller
             $timestamp = mktime(0, 0, 0, date('n') - $i, 1);
             $months[date('n', $timestamp)] = date('F', $timestamp);
         }
+
         return $months;
     }
 
+    /**
+     * Get array of years
+     * @return array
+     */
     public function getYears()
     {
         $years = [];
@@ -61,7 +74,16 @@ class ControllerBase extends Controller
         foreach ($workTimes as $workTime){
             $years[$workTime['year']] = $workTime['year'];
         }
+
         return array_unique($years);
     }
 
+    /**
+     * Get current DateTime
+     * @return DateTime
+     */
+    public function getCurrentDateTime()
+    {
+        return new DateTime();
+    }
 }

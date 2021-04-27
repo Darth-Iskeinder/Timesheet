@@ -1,19 +1,23 @@
 <?php
 
-
+/**
+ * Class TimeController
+ */
 class TimeController extends ControllerBase
 {
+    /**
+     * List of users for admin panel
+     * @param int $id
+     */
     public function indexAction($id)
     {
-        $currentDate = new DateTime();
         if($this->request->get('month') && $this->request->get('year')){
             $getMonth = $this->request->get('month');
             $getYear = $this->request->get('year');
         } else{
-            $getMonth = $currentDate->format('m');
-            $getYear = $currentDate->format('Y');
+            $getMonth = $this->getCurrentDateTime()->format('m');
+            $getYear = $this->getCurrentDateTime()->format('Y');
         }
-
         $userTimes = WorkTime::getUserByMothYear($id, $getMonth, $getYear);
         $this->view->setVars(
             [
@@ -27,12 +31,14 @@ class TimeController extends ControllerBase
         );
     }
 
+    /**
+     * Create working time for users
+     */
     public function createAction()
     {
         $form = new TimeForm();
         if($this->request->isPost()){
             $workTime = new WorkTime();
-
             $workTime->setUserId($this->request->getPost('userId'));
             $workTime->setYear($this->request->getPost('year'));
             $workTime->setMonth($this->request->getPost('month'));
@@ -40,9 +46,8 @@ class TimeController extends ControllerBase
             $workTime->setStartTime($this->request->getPost('startTime'));
             $workTime->setEndTime($this->request->getPost('end_time'));
             $workTime->setTotal($this->request->getPost('total'));
-
             if(!$workTime->save()){
-                $this->flash->error($workTime->getMessage());
+                $this->flash->error('Time was not created');
             } else{
                 $this->flash->success("WorkTime was created successfully");
                 $form->clear();
@@ -51,23 +56,27 @@ class TimeController extends ControllerBase
         $this->view->form = $form;
     }
 
+    /**
+     * Update users work times
+     * @param int $id
+     */
     public function updateAction($id)
     {
         $workTime = WorkTime::findFirstById($id);
         $userArray = $workTime->toArray();
         $userId = $userArray["user_id"];
-
         if(!$workTime){
             $this->flash->error('Work time was not found');
-
             $this->response->redrect('/timesheet');
             return;
         }
         $this->view->userId = $userId;
         $this->view->form = new TimeForm($workTime, ['edit' => true]);
-
     }
 
+    /**
+     * Save updated work times
+     */
     public function saveAction()
     {
         if(!$this->request->isPost()){
@@ -104,7 +113,6 @@ class TimeController extends ControllerBase
         }
         $form->clear();
         $this->flash->success('WorkTime was updated successfully');
-
         $this->dispatcher->forward([
             'action'     => 'index',
             'params'     => [$userId],

@@ -1,14 +1,22 @@
 <?php
 
-use Phalcon\Forms\Form;
-
+/**
+ * Class SessionController
+ */
 class SessionController extends ControllerBase
 {
+    /**
+     * Start login page
+     */
     public function loginAction()
     {
 
     }
 
+    /**
+     * Register new session
+     * @param $user
+     */
     public function registerSession($user)
     {
         $this->session->set('auth', array(
@@ -17,13 +25,15 @@ class SessionController extends ControllerBase
         ));
     }
 
+    /**
+     * User authorization action
+     * Check user credentials
+     */
     public function authorizeAction()
     {
         if($this->request->isPost()){
-
             $email = $this->request->getPost('email');
             $password = $this->request->getPost('password');
-
             $user = Users::findFirst([
                 "conditions" => "email = ?0",
                 "bind" => [
@@ -38,19 +48,18 @@ class SessionController extends ControllerBase
                             'action' => 'login'
                         ]);
                     }
-
                     $this->registerSession($user);
-                    $this->flash->success("Welcome back " . $user->getName());
+                    $this->flash->success("Welcome back \"{$user->getName()}\"");
 
                     if($user->getRole() === 'admin'){
+
                         return $this->dispatcher->forward([
                             'controller' => 'user',
                             'action' => 'index'
                         ]);
-
                     }
-                    return $this->response->redirect('timesheet');
 
+                    return $this->response->redirect('timesheet');
                 }
             }
             $this->flash->error('Wrong email/password');
@@ -60,6 +69,9 @@ class SessionController extends ControllerBase
         ]);
     }
 
+    /**
+     * Logout user
+     */
     public function logoutAction()
     {
         $this->session->destroy();
