@@ -10,13 +10,8 @@ class TimesheetController extends ControllerBase
      */
     public function indexAction()
     {
-        if($this->request->get('monthUsers') && $this->request->get('yearUsers')){
-            $getMonthUsers = $this->request->get('monthUsers');
-            $getYearUsers = $this->request->get('yearUsers');
-        } else {
-            $getMonthUsers = $this->getCurrentDateTime()->format('m');
-            $getYearUsers = $this->getCurrentDateTime()->format('Y');
-        }
+        $getMonthUsers = $this->request->get('monthUsers') ?? $this->getCurrentDateTime()->format('m');
+        $getYearUsers = $this->request->get('yearUsers') ?? $this->getCurrentDateTime()->format('Y');
         $users = Users::find();
         $workTime = WorkTime::getTimesByMonthAndYear($getMonthUsers, $getYearUsers);
         $holidays = Holidays::find()->toArray();
