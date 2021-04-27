@@ -33,11 +33,9 @@ class Acl extends Component
      */
     public function getAcl()
     {
-        // Check if the ACL is already created
         if (is_object($this->acl)) {
             return $this->acl;
         } else{
-          //  print_die($this->rebuild());
             return $this->acl = $this->rebuild();
         }
     }
@@ -49,16 +47,12 @@ class Acl extends Component
     public function rebuild()
     {
         $acl = new AclList();
-
         $acl->setDefaultAction(\Phalcon\Acl::DENY);
-
         $acl->addRole('user');
         $acl->addRole('admin');
-
         foreach ($this->privateResources as $resource => $actions) {
             $acl->addResource(new AclResource($resource), $actions);
         }
-
         $acl->allow('admin', '*', '*');
         $acl->allow('user', 'timesheet', '*');
 
