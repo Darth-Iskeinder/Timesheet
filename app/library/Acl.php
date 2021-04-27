@@ -4,6 +4,7 @@ use Phalcon\Mvc\User\Component;
 use Phalcon\Acl\Role as AclRole;
 use Phalcon\Acl\Resource as AclResource;
 use Phalcon\Acl\Adapter\Memory as AclMemory;
+use Phalcon\Acl\Adapter\Memory as AclList;
 
 class Acl extends Component
 {
@@ -34,8 +35,7 @@ class Acl extends Component
 
     public function rebuild()
     {
-
-        $acl = new AclMemory();
+        $acl = new AclList();
 
         $acl->setDefaultAction(\Phalcon\Acl::DENY);
 
@@ -47,14 +47,8 @@ class Acl extends Component
             $acl->addResource(new AclResource($resource), $actions);
         }
 
-       // $acl->allow('guest', 'SessionController', ['login']);
-       // $acl->allow('user', 'SessionController', '*');
-       // $acl->allow('user', 'timesheet', '*');
         $acl->allow('admin', '*', '*');
-       // $acl->allow('admin', 'SessionController', '*');
-      //  print_arr($acl);
-
-      //print_die($acl);
+        $acl->allow('user', 'timesheet', '*');
 
         return $acl;
     }

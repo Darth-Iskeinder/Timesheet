@@ -11,25 +11,26 @@ return new Config([
             'save',
             'delete'
         ],
-//        'holiday' => [
-//            'create'
-//        ],
-//        'lateness' => [
-//            'index',
-//            'createStartDayTime',
-//            'list',
-//            'delete'
-//        ],
-//        'time' => [
-//            'index',
-//            'create',
-//            'update',
-//            'save'
-//        ],
-//        'session' => [
-//            'login',
-//            'authorize',
-//            'logout'
-//        ]
+        'timesheet' => [
+            'index',
+            'createStart',
+            'createEnd',
+            'changePassword'
+        ],
+        'holiday' => [
+            'create'
+        ],
+        'lateness' => [
+            'index',
+            'createStartDayTime',
+            'list',
+            'delete'
+        ],
+        'time' => [
+            'index',
+            'create',
+            'update',
+            'save'
+        ]
     ]
 ]);
