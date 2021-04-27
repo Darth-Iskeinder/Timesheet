@@ -1,27 +1,36 @@
 <?php
 
 use Phalcon\Mvc\User\Component;
-use Phalcon\Acl\Role as AclRole;
 use Phalcon\Acl\Resource as AclResource;
-use Phalcon\Acl\Adapter\Memory as AclMemory;
 use Phalcon\Acl\Adapter\Memory as AclList;
 
 class Acl extends Component
 {
     /**
      * The ACL Object
-     *
-     * @var \Phalcon\Acl\Adapter\Memory
      */
     private $acl;
 
-    private $privateResources = array();
+    /**
+     * @var array
+     */
+    private $privateResources = [];
 
+    /**
+     * Check allow permissions
+     * @param $role
+     * @param $controller
+     * @param $action
+     * @return mixed
+     */
     public function isAllowed($role, $controller, $action)
     {
         return $this->getAcl()->isAllowed($role, $controller, $action);
     }
 
+    /**
+     * @return AclList
+     */
     public function getAcl()
     {
         // Check if the ACL is already created
@@ -33,13 +42,16 @@ class Acl extends Component
         }
     }
 
+    /**
+     * Build ACL
+     * @return AclList
+     */
     public function rebuild()
     {
         $acl = new AclList();
 
         $acl->setDefaultAction(\Phalcon\Acl::DENY);
 
-        $acl->addRole('guest');
         $acl->addRole('user');
         $acl->addRole('admin');
 
@@ -65,6 +77,10 @@ class Acl extends Component
         return isset($this->privateResources[$controllerName]);
     }
 
+    /**
+     * Add private resource
+     * @param array $resources
+     */
     public function addPrivateResources(array $resources)
     {
         if (count($resources) > 0) {
