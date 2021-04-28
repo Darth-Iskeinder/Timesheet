@@ -6,7 +6,7 @@
 class TimesheetController extends ControllerBase
 {
     /**
-     * Main user panel
+     * Main user timesheet panel
      */
     public function indexAction()
     {
